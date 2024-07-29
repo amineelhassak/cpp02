@@ -77,3 +77,67 @@ int main() {
 
 - **Destructeur** : Libère les ressources allouées lorsque l'objet est détruit.
 
+## Surcharge d'Opérateurs
+
+La surcharge d'opérateurs (ou *operator overloading*) en C++ permet de définir ou de modifier le comportement des opérateurs (comme `+`, `-`, `*`, etc.) pour les types de données définis par l'utilisateur (par exemple, les classes). Cela rend les objets de ces types plus intuitifs à utiliser avec des opérateurs arithmétiques, relationnels, ou autres.
+
+```cpp
+#include <iostream>
+
+class Vector2D {
+private:
+    double x, y;
+
+public:
+    // Constructeur
+    Vector2D(double x = 0, double y = 0) : x(x), y(y) {}
+
+    // Surcharge de l'opérateur +
+    Vector2D operator+(const Vector2D& other) const {
+        return Vector2D(x + other.x, y + other.y);
+    }
+
+    // Surcharge de l'opérateur -
+    Vector2D operator-(const Vector2D& other) const {
+        return Vector2D(x - other.x, y - other.y);
+    }
+
+    // Surcharge de l'opérateur *
+    Vector2D operator*(double scalar) const {
+        return Vector2D(x * scalar, y * scalar);
+    }
+
+    // Surcharge de l'opérateur <<
+    friend std::ostream& operator<<(std::ostream& os, const Vector2D& v) {
+        os << "(" << v.x << ", " << v.y << ")";
+        return os;
+    }
+
+    // Surcharge de l'opérateur ==
+    bool operator==(const Vector2D& other) const {
+        return x == other.x && y == other.y;
+    }
+};
+
+int main() {
+    Vector2D v1(1.0, 2.0);
+    Vector2D v2(3.0, 4.0);
+
+    Vector2D v3 = v1 + v2; // Utilisation de l'opérateur +
+    Vector2D v4 = v1 - v2; // Utilisation de l'opérateur -
+    Vector2D v5 = v1 * 2;  // Utilisation de l'opérateur *
+
+    std::cout << "v1 + v2 = " << v3 << std::endl;
+    std::cout << "v1 - v2 = " << v4 << std::endl;
+    std::cout << "v1 * 2 = " << v5 << std::endl;
+
+    if (v1 == v2) {
+        std::cout << "v1 est égal à v2" << std::endl;
+    } else {
+        std::cout << "v1 n'est pas égal à v2" << std::endl;
+    }
+
+    return 0;
+}
+```
+Les autres opérations disponibles dans ce projet incluent L'incrémentation et la décrémentation `++`, `--`, ainsi que les comparaisons `<`, `<=`, `>=`, et `>`.
