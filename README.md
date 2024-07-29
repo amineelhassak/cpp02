@@ -141,3 +141,116 @@ int main() {
 }
 ```
 Les autres opérations disponibles dans ce projet incluent L'incrémentation et la décrémentation `++`, `--`, ainsi que les comparaisons `<`, `<=`, `>=`, et `>`.
+### . Définition des Points Fixes
+
+Un nombre en virgule fixe est représenté par un entier, mais interprété comme s'il avait une virgule fixe à une certaine position. Par exemple, avec 8 bits fractionnaires (aussi appelés Q8), cela signifie que la partie fractionnaire a 8 bits.
+
+Si tu veux convertir un entier en nombre à virgule fixe, il suffit de décaler (shift) par le nombre de bits fractionnaires.
+
+## Conversion d'un Nombre Flottant en Virgule Fixe
+
+
+### 1. Multiplier par une Puissance de 2
+
+Pour convertir un nombre flottant en virgule fixe, il faut multiplier ce nombre flottant par \(2^N\), où \(N\) est le nombre de bits de la partie fractionnaire. Par exemple, si vous avez 8 bits fractionnaires, \(N = 8\), donc vous multipliez par \(2^8 = 256\).
+
+### 2. Arrondir à l'Entier le Plus Proche
+
+Après avoir multiplié le nombre flottant par \(2^N\), il faut arrondir le résultat à l'entier le plus proche pour obtenir le nombre en virgule fixe.
+
+### 3. Stocker en Tant qu'Entier
+
+Le résultat arrondi est ensuite stocké en tant qu'entier. Cet entier représente la valeur en virgule fixe.
+
+### Exemple
+
+Supposons que nous voulons convertir le nombre flottant 3.75 en virgule fixe avec 8 bits fractionnaires :
+
+- **Multiplier par \(2^8\)** :
+  \[
+  3.75 \times 256 = 960
+  \]
+
+- **Arrondir à l'entier le plus proche** :
+  \[
+  960 \text{ (déjà un entier)}
+  \]
+
+- **Stocker en tant qu'entier** :
+  \[
+  960
+  \]
+
+Ainsi, le nombre flottant 3.75 est représenté par l'entier 960 en virgule fixe avec 8 bits fractionnaires.
+
+### Conversion Inverse : Virgule Fixe à Flottant
+
+Pour convertir un nombre en virgule fixe en nombre flottant, il suffit de diviser l'entier par \(2^N\).
+
+### Exemple
+
+Pour convertir l'entier 960 (qui est en format Q8) en nombre flottant :
+
+- **Diviser par \(2^8\)** :
+  \[
+  \frac{960}{256} = 3.75
+  \]
+
+Ainsi, l'entier 960 en virgule fixe avec 8 bits fractionnaires représente le nombre flottant 3.75.
+
+## Conversion d'un Nombre Flottant en Représentation Binaire IEEE 754 (Simple Précision)
+
+### Étapes
+
+1. **Décomposer le Nombre Flottant**
+
+   Le nombre flottant est décomposé en trois parties :
+   - **Bit de signe** : Indique si le nombre est positif (0) ou négatif (1).
+   - **Exposant** : La puissance de 2 à laquelle la mantisse est multipliée.
+   - **Mantisse** : La partie fractionnaire du nombre flottant.
+
+   Exemple : Prenons le nombre flottant `5.0` et convertissons-le en format IEEE 754 simple précision.
+
+2. **Décomposer le Nombre Flottant**
+
+   - **Bit de Signe** : Le nombre `5.0` est positif, donc le bit de signe est `0`.
+
+   - **Partie Entière en Binaire** : La partie entière de `5` en binaire est `101`.
+
+   - **Notation Scientifique** : En notation scientifique, cela devient `1.01 × 2^2`.
+
+3. **Calculer l'Exposant**
+
+   L'exposant est `2`. En IEEE 754, l'exposant est stocké avec un biais de `127` pour la simple précision.
+
+   \[
+   \text{Exposant} = 2 + 127 = 129
+   \]
+
+   En binaire, `129` s'écrit :
+
+   \[
+   10000001
+   \]
+
+4. **Convertir la Mantisse**
+
+   La mantisse est la partie fractionnaire de `1.01`, en enlevant le `1` implicite :
+
+   \[
+   01000000000000000000000
+   \]
+
+5. **Combiner Toutes les Parties**
+
+   - **Bit de Signe** : `0`
+   - **Exposant** : `10000001`
+   - **Mantisse** : `01000000000000000000000`
+
+   La représentation binaire IEEE 754 de `5.0` est donc :
+
+   \[
+   01000000101000000000000000000000
+   \]
+La conversion inverse est très simple.
+
